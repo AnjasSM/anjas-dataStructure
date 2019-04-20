@@ -4,13 +4,90 @@
 <head>
 	<title>Parcel Sandbox</title>
 	<meta charset="UTF-8" />
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
 </head>
 
 <body>
-	<div id="app"></div>
+	<div id="app">
+		<br>
+		<b>
+			<h3 class="text-center">Contact Manager</h3>
+		</b>
+		<br>
+		<div class="container">
+			<div class="row">
+				<div class="col-4">
+					<div class="shadow p-3 mb-5 bg-white rounded">
+						<form>
+							<div class="form-group">
+								<label for="input FullName"><strong>Full Name</strong></label>
+								<input type="string" class="form-control" id="inputFullName"
+									aria-describedby="fullNameHelp" placeholder="Enter Full Name" />
+							</div>
+							<div class="form-group">
+								<label for="input PhoneNumber"><strong>Phone Number</strong></label>
+								<input type="integer" class="form-control" id="inputPhoneNumber"
+									aria-describedby="phoneNumberHelp" placeholder="enter Phone Number" />
+							</div>
+							<div class="form-group">
+								<label for="input FullName"><strong>Email Address</strong></label>
+								<input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp"
+									placeholder="Enter Email" />
+							</div>
+							<div class=" form-group">
+								<label for="input Gender"><strong>Gender</strong></label> <br>
+								<input type="radio" name="gender" value="male"> Male<br>
+								<input type="radio" name="gender" value="female"> Female
+							</div>
+							<button type="submit" class="btn btn-primary" id="submit">Submit</button>
+						</form>
+					</div>
+				</div>
+				<div class="col-8">
+					<div class="shadow p-3 mb-5 bg-white rounded">
+						<div class="input-group">
+							<input type="text" class="form-control" aria-label="Text input with dropdown button">
+							<div class="input-group-append">
+								<button class="btn btn-outline-secondary dropdown-toggle" type="button"
+									data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter by</button>
+								<div class="dropdown-menu">
+									<a class="dropdown-item" href="#">Name</a>
+									<a class="dropdown-item" href="#">Gender</a>
+								</div>
+							</div>
+						</div>
+						<div>
+							<table class="table">
+								<thead>
+									<tr>
+										<th scope="col">#</th>
+										<th scope="col">Full Name</th>
+										<th scope="col">Phone Number</th>
+										<th scope="col">Email</th>
+										<th scope="col">Gender</th>
+										<th scope="col">&nbsp;</th>
+									</tr>
+								</thead>
+								<tbody id="table-rows"></tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 
-	<script src="src/index.js">
-	</script>
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+			integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+		</script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+			integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+		</script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+			integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+		</script>
+		<script src="src/index.js">
+		</script>
 </body>
 
 </html>
