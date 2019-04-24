@@ -1,6 +1,6 @@
-let db = {
-  contacts: []
-};
+// let db = {
+//   contacts: []
+// };
 
 const contacts = [{
     id: 1,
@@ -41,68 +41,72 @@ const contacts = [{
 
 //menampilkan data
 function view() {
-  // array.map
-  let tbody = document.getElementById("table-rows");
+  
   contacts.map((contact, index) => {
+    let tbody = document.getElementById("table-rows");
+    //membuat tabel
     let row = tbody.insertRow(); // tr, table row
+
+    //memberikan atribut id dengan value sesuai id user pada setiap baris
+    row.setAttribute("id", `db-${contact.id}`);
+
     let column1 = row.insertCell(0); // td, table , column #0
     let column2 = row.insertCell(1); // column #1
     let column3 = row.insertCell(2);
     let column4 = row.insertCell(3);
     let column5 = row.insertCell(4);
     let column6 = row.insertCell(5);
-
+    
+    //mengisi tabel
     column1.innerHTML = contact.id;
     column2.innerHTML = contact.fullName;
     column3.innerHTML = contact.phoneNumber;
     column4.innerHTML = contact.email;
     column5.innerHTML = contact.gender;
-    column6.innerHTML = ``;
+    column6.innerHTML = `
+    `;
   });
 };
 
-//tambah data
-function add(data) {
-  const addcontact = [...contacts, data];
+
+// tambah data
+function add(input) {
+  const addcontact = [...contacts, input];
   console.log(addcontact);
 }
 
-isValid = (...data) => {
-  let val;
-  data.map(contact => {
-    
-  })
-}
+function isValid(...input){
+  let valid;
+  input.map( contact => {
+    let isNull = contact.fullName !== "" && contact.phoneNumber !== "" && contact.email !== "";
+    if ( isNull ) {
+      if (contact.length > 3) {
+        return true;
+      } else {
+        valid = 'min4';
+        return false
+      }
+    } else {
+      val = null;
+      return false;
+    }
+  });
+  if ( valid === null ) {
+    alert("Input Tidak Boleh Kosong")
+  } else {
+    if (valid === "min4") {
+      alert(" Masukkan minimal 4 karakter")
+    } else {
+      return true
+    }
+  }
+};
 
-const onBtnClick = document.getElementById("submit");
-onBtnClick.addEventListener("click", function() {
-  let fullname = document.getElementById("inputFullname");
-  let email = document.getElementById("inputEmail");
-  let phone = document.getElementById("inputPhonenumber");
-  let gender = document.getElementById("inputGender");
-
-    let tbody = document.getElementById("table-rows");
-    let row = tbody.insertRow();
-    let column1 = row.insertCell(0);
-    let column2 = row.insertCell(1);
-    let column3 = row.insertCell(2);
-    let column4 = row.insertCell(3);
-    let column5 = row.insertCell(4);
-    let column6 = row.insertCell(5);
-
-    column1.innerHTML = id;
-    column2.innerHTML = fullNameadd.value;
-    column3.innerHTML = phoneNumberadd.value;
-    column4.innerHTML = emailadd.value;
-    column5.innerHTML = genderadd.value;
-    column6.innerHTML = ``;
-
-
-
-function edit(data, id) {
+//mengubah data
+function edit(id) {
   let editContact = contacts.map(contact => {
     if (contact.id === id) {
-      return { ...contact,...data };
+      return { ...contact, ...data };
     }
     return contact;
   });
@@ -110,38 +114,87 @@ function edit(data, id) {
   console.log(editContact);
 }
 
+//menghapus data
 function remove(id) {
-  // array.filter
   const removeContact = contacts.filter(contact => contact.id != id);
-  // spread operator ....
   console.log(removeContact);
 }
 
-
-let input = {
-  id: 5,
-  fullName: "Shadow Maffi",
-  phoneNumber: "8455497996",
-  email: "smaffi4@bravesites.com",
-  gender: "Male"
+//mengosongkan form
+function clearForm() {
+  fullname.value = '';
+  phoneNumber.value = '';
+  email.value = '';
 }
 
-function updateDb(data) {
-  db = db.contact = data;
-};
+//event click untuk tombol submit
+const submit = document.getElementById('submit');
+submit.addEventListener('click', function(){
+  let i = 5;
+  let fullName = document.getElementById("input-fullname");
+  let email = document.getElementById("input-email");
+  let phoneNumber = document.getElementById("input-phonenumber");
+  let gender = document.getElementById("input-gender");
 
-let result;
-result = add(input);
-updateDb(result);
-console.log(db);
+  //validasi
+  const valid = isValid(fullName.value, email.value, phoneNumber.value);
 
-view();
+  if (valid) {
+    let tbody = document.getElementById("table-rows");
+    //membuat tabel
+    let row = tbody.insertRow(); // tr, table row
 
-console.log("========View========");
-view(contacts);
-console.log("========Add========");
-add(input);
-console.log("========Edit========");
-edit(input, 1);
-console.log("========Remove========");
-remove(1);
+    //memberikan atribut id dengan value sesuai id user pada setiap baris
+    row.setAttribute("id", `db-${id}`);
+
+    let column1 = row.insertCell(0); // td, table data, column #0
+    let column2 = row.insertCell(1); // column #1
+    let column3 = row.insertCell(2);
+    let column4 = row.insertCell(3);
+    let column5 = row.insertCell(4);
+    let column6 = row.insertCell(5);
+    
+    //mengisi tabel
+    column1.innerHTML = i;
+    column2.innerHTML = fullName.value;
+    column3.innerHTML = phoneNumber.value;
+    column4.innerHTML = email.value;
+    column5.innerHTML = gender.value;
+    column6.innerHTML = `
+    `;
+
+    let input = {
+      id: i++,
+      fullName: fullName.value,
+      phoneNumber: phoneNumber.value,
+      email: email.value,
+      gender: gender.value
+    }
+  
+    add(input);
+  } else {
+    console.log('add contact error');
+  }
+  clearForm();
+})
+
+// // function updateDb(data) {
+// //   db = db.contact = data;
+// // };
+
+// // let result;
+// // re sult = add(input);
+// // updateDb(result);
+// // console.log(db);
+
+// view();
+// console.log(contacts)
+
+// // console.log("========View========");
+// // view(contacts);
+// // console.log("========Add========");
+// // add(input);
+// // console.log("========Edit========");
+// // edit(input, 1);
+// // console.log("========Remove========");
+// // remove(1);
