@@ -64,6 +64,8 @@ function view() {
     column4.innerHTML = contact.email;
     column5.innerHTML = contact.gender;
     column6.innerHTML = `
+      <a href="#" id="hapus"> Hapus</a>
+      <a href="#" id="edit"> Edit</a>
     `;
   });
 };
@@ -71,8 +73,8 @@ function view() {
 
 // tambah data
 function add(input) {
-  const addcontact = [...contacts, input];
-  console.log(addcontact);
+  const contacts = [...contacts, input];
+  return contacts;
 }
 
 function isValid(...input){
@@ -122,7 +124,12 @@ function remove(id) {
 
 //mengosongkan form
 function clearForm() {
-  fullname.value = '';
+  
+  let fullName = document.getElementById("input-fullname");
+  let email = document.getElementById("input-email");
+  let phoneNumber = document.getElementById("input-phonenumber");
+
+  fullName.value = '';
   phoneNumber.value = '';
   email.value = '';
 }
@@ -134,7 +141,7 @@ submit.addEventListener('click', function(){
   let fullName = document.getElementById("input-fullname");
   let email = document.getElementById("input-email");
   let phoneNumber = document.getElementById("input-phonenumber");
-  let gender = document.getElementById("input-gender");
+  let gender = document.querySelector('input[name="gender"]:checked');
 
   //validasi
   const valid = isValid(fullName.value, email.value, phoneNumber.value);
@@ -145,7 +152,7 @@ submit.addEventListener('click', function(){
     let row = tbody.insertRow(); // tr, table row
 
     //memberikan atribut id dengan value sesuai id user pada setiap baris
-    row.setAttribute("id", `db-${id}`);
+    row.setAttribute("id", `db-${i}`);
 
     let column1 = row.insertCell(0); // td, table data, column #0
     let column2 = row.insertCell(1); // column #1
@@ -161,6 +168,8 @@ submit.addEventListener('click', function(){
     column4.innerHTML = email.value;
     column5.innerHTML = gender.value;
     column6.innerHTML = `
+      <a href="#" id="hapus"> Hapus</a>
+      <a href="#" id="edit"> Edit</a>
     `;
 
     let input = {
@@ -178,23 +187,10 @@ submit.addEventListener('click', function(){
   clearForm();
 })
 
-// // function updateDb(data) {
-// //   db = db.contact = data;
-// // };
+//event click untuk tombol remove
+// const hapus = document.getElementById(hapus)
+// hapus.addEventListener("click", function(){
+  //cari tr id db-contact.id
+// })
 
-// // let result;
-// // re sult = add(input);
-// // updateDb(result);
-// // console.log(db);
-
-// view();
-// console.log(contacts)
-
-// // console.log("========View========");
-// // view(contacts);
-// // console.log("========Add========");
-// // add(input);
-// // console.log("========Edit========");
-// // edit(input, 1);
-// // console.log("========Remove========");
-// // remove(1);
+view();

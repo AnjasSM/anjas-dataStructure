@@ -179,15 +179,15 @@ function view() {
     column3.innerHTML = contact.phoneNumber;
     column4.innerHTML = contact.email;
     column5.innerHTML = contact.gender;
-    column6.innerHTML = "\n    ";
+    column6.innerHTML = "\n      <a href=\"#\" id=\"hapus\"> Hapus</a>\n      <a href=\"#\" id=\"edit\"> Edit</a>\n    ";
   });
 }
 
 ; // tambah data
 
 function add(input) {
-  var addcontact = [].concat(contacts, [input]);
-  console.log(addcontact);
+  var contacts = [].concat(contacts, [input]);
+  return contacts;
 }
 
 function isValid() {
@@ -247,7 +247,10 @@ function remove(id) {
 
 
 function clearForm() {
-  fullname.value = '';
+  var fullName = document.getElementById("input-fullname");
+  var email = document.getElementById("input-email");
+  var phoneNumber = document.getElementById("input-phonenumber");
+  fullName.value = '';
   phoneNumber.value = '';
   email.value = '';
 } //event click untuk tombol submit
@@ -259,7 +262,7 @@ submit.addEventListener('click', function () {
   var fullName = document.getElementById("input-fullname");
   var email = document.getElementById("input-email");
   var phoneNumber = document.getElementById("input-phonenumber");
-  var gender = document.getElementById("input-gender"); //validasi
+  var gender = document.querySelector('input[name="gender"]:checked'); //validasi
 
   var valid = isValid(fullName.value, email.value, phoneNumber.value);
 
@@ -269,7 +272,7 @@ submit.addEventListener('click', function () {
     var row = tbody.insertRow(); // tr, table row
     //memberikan atribut id dengan value sesuai id user pada setiap baris
 
-    row.setAttribute("id", "db-".concat(id));
+    row.setAttribute("id", "db-".concat(i));
     var column1 = row.insertCell(0); // td, table data, column #0
 
     var column2 = row.insertCell(1); // column #1
@@ -284,7 +287,7 @@ submit.addEventListener('click', function () {
     column3.innerHTML = phoneNumber.value;
     column4.innerHTML = email.value;
     column5.innerHTML = gender.value;
-    column6.innerHTML = "\n    ";
+    column6.innerHTML = "\n      <a href=\"#\" id=\"hapus\"> Hapus</a>\n      <a href=\"#\" id=\"edit\"> Edit</a>\n    ";
     var input = {
       id: i++,
       fullName: fullName.value,
@@ -298,23 +301,13 @@ submit.addEventListener('click', function () {
   }
 
   clearForm();
-}); // // function updateDb(data) {
-// //   db = db.contact = data;
-// // };
-// // let result;
-// // re sult = add(input);
-// // updateDb(result);
-// // console.log(db);
-// view();
-// console.log(contacts)
-// // console.log("========View========");
-// // view(contacts);
-// // console.log("========Add========");
-// // add(input);
-// // console.log("========Edit========");
-// // edit(input, 1);
-// // console.log("========Remove========");
-// // remove(1);
+}); //event click untuk tombol remove
+// const hapus = document.getElementById(hapus)
+// hapus.addEventListener("click", function(){
+//cari tr id db-contact.id
+// })
+
+view();
 },{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -343,7 +336,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53830" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57176" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
