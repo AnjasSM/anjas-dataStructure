@@ -122,9 +122,9 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-// let db = {
-//   contacts: []
-// };
+//id db
+var i = 6; //db
+
 var contacts = [{
   id: 1,
   fullName: "Genna Arnli",
@@ -179,15 +179,15 @@ function view() {
     column3.innerHTML = contact.phoneNumber;
     column4.innerHTML = contact.email;
     column5.innerHTML = contact.gender;
-    column6.innerHTML = "\n      <a href=\"#\" id=\"hapus\"> Hapus</a>\n      <a href=\"#\" id=\"edit\"> Edit</a>\n    ";
+    column6.innerHTML = "\n      <a href=\"#\" id=\"hapus\" db-id=".concat(contact.id, "> Hapus</a>\n      <a href=\"#\" id=\"edit\" db-id=").concat(contact.id, "> Edit</a>\n    ");
   });
 }
 
 ; // tambah data
 
-function add(input) {
-  var contacts = [].concat(contacts, [input]);
-  return contacts;
+function add(data) {
+  var addContacts = [].concat(contacts, [data]);
+  return addContacts;
 }
 
 function isValid() {
@@ -226,7 +226,7 @@ function isValid() {
 
 ; //mengubah data
 
-function edit(id) {
+function edit(data, id) {
   var editContact = contacts.map(function (contact) {
     if (contact.id === id) {
       return _objectSpread({}, contact, data);
@@ -234,13 +234,13 @@ function edit(id) {
 
     return contact;
   });
-  console.log(editContact);
+  return editContact;
 } //menghapus data
 
 
-function remove(id) {
+function remove(x) {
   var removeContact = contacts.filter(function (contact) {
-    return contact.id != id;
+    return contact.id != x;
   });
   console.log(removeContact);
 } //mengosongkan form
@@ -248,66 +248,137 @@ function remove(id) {
 
 function clearForm() {
   var fullName = document.getElementById("input-fullname");
-  var email = document.getElementById("input-email");
   var phoneNumber = document.getElementById("input-phonenumber");
+  var email = document.getElementById("input-email");
   fullName.value = '';
   phoneNumber.value = '';
   email.value = '';
 } //event click untuk tombol submit
+//event click untuk tombol remove
 
 
-var submit = document.getElementById('submit');
-submit.addEventListener('click', function () {
-  var i = 5;
-  var fullName = document.getElementById("input-fullname");
-  var email = document.getElementById("input-email");
-  var phoneNumber = document.getElementById("input-phonenumber");
-  var gender = document.querySelector('input[name="gender"]:checked'); //validasi
-
-  var valid = isValid(fullName.value, email.value, phoneNumber.value);
-
-  if (valid) {
-    var tbody = document.getElementById("table-rows"); //membuat tabel
-
-    var row = tbody.insertRow(); // tr, table row
-    //memberikan atribut id dengan value sesuai id user pada setiap baris
-
-    row.setAttribute("id", "db-".concat(i));
-    var column1 = row.insertCell(0); // td, table data, column #0
-
-    var column2 = row.insertCell(1); // column #1
-
-    var column3 = row.insertCell(2);
-    var column4 = row.insertCell(3);
-    var column5 = row.insertCell(4);
-    var column6 = row.insertCell(5); //mengisi tabel
-
-    column1.innerHTML = i;
-    column2.innerHTML = fullName.value;
-    column3.innerHTML = phoneNumber.value;
-    column4.innerHTML = email.value;
-    column5.innerHTML = gender.value;
-    column6.innerHTML = "\n      <a href=\"#\" id=\"hapus\"> Hapus</a>\n      <a href=\"#\" id=\"edit\"> Edit</a>\n    ";
-    var input = {
-      id: i++,
-      fullName: fullName.value,
-      phoneNumber: phoneNumber.value,
-      email: email.value,
-      gender: gender.value
-    };
-    add(input);
-  } else {
-    console.log('add contact error');
+document.addEventListener('click', function (e) {
+  if (e.target.id == 'hapus') {
+    var id = e.target.attributes[2].nodeValue;
+    var data = document.getElementById("db-".concat(id));
+    data.innerHTML = "";
+    remove(id);
   }
 
-  clearForm();
-}); //event click untuk tombol remove
-// const hapus = document.getElementById(hapus)
-// hapus.addEventListener("click", function(){
-//cari tr id db-contact.id
-// })
+  if (e.target.id == 'edit') {
+    var _id = e.target.attributes[2].nodeValue;
+    var fullName = document.getElementById("input-fullname");
+    var phoneNumber = document.getElementById("input-phonenumber");
+    var email = document.getElementById("input-email");
+    var gender = document.getElementById("input-gender");
+    var dbId = document.getElementById("id");
+    var _data = {};
+    fullName.value = _data.fullName;
+    phoneNumber.value = _data.phoneNumber;
+    email.value = _data.email;
+    gender.value = _data.gender;
+    dbId.value = _data.id;
+    contacts.filter(function (contact) {
+      if (contact.id == _id) {
+        _data = contact;
+      }
 
+      _edit(_data, _id);
+    });
+
+    var _edit = document.getElementById('submit');
+
+    _edit.setAttribute('id', 'ganti');
+  }
+
+  if (e.target.id == 'ganti') {
+    var _fullName = document.getElementById("input-fullname");
+
+    var _phoneNumber = document.getElementById("input-phonenumber");
+
+    var _email = document.getElementById("input-email");
+
+    var _gender = document.getElementById("input-gender");
+
+    var _dbId = document.getElementById("id");
+
+    var dataBaru = document.getElementById("db-".concat(_dbId.value));
+    dataBaru.cells[0].innerHTML = _dbId.value;
+    dataBaru.cells[1].innerHTML = _fullName.value;
+    dataBaru.cells[2].innerHTML = _phoneNumber.value;
+    dataBaru.cells[3].innerHTML = _email.value;
+    dataBaru.cells[4].innerHTML = _gender.value;
+    var input = {
+      fullName: _fullName.value,
+      phoneNumber: _phoneNumber.value,
+      email: _email.value,
+      gender: _gender.value
+    };
+    edit(input, _dbId.value);
+    clearForm();
+  }
+
+  if (e.target.id == 'submit') {
+    var _fullName2 = document.getElementById("input-fullname");
+
+    var _phoneNumber2 = document.getElementById("input-phonenumber");
+
+    var _email2 = document.getElementById("input-email");
+
+    var _gender2 = document.getElementById("input-gender"); //validasi
+
+
+    var valid = isValid(_fullName2.value, _phoneNumber2.value, _email2.value);
+
+    if (valid) {
+      var _tbody = document.getElementById("table-rows"); //membuat tabel
+
+
+      var row = _tbody.insertRow(); // tr, table row
+      //memberikan atribut id dengan value sesuai id user pada setiap baris
+
+
+      row.setAttribute("id", "db-".concat(i));
+      var column1 = row.insertCell(0); // td, table data, column #0
+
+      var column2 = row.insertCell(1); // column #1
+
+      var column3 = row.insertCell(2);
+      var column4 = row.insertCell(3);
+      var column5 = row.insertCell(4);
+      var column6 = row.insertCell(5); //mengisi tabel
+
+      column1.innerHTML = i;
+      column2.innerHTML = _fullName2.value;
+      column3.innerHTML = _phoneNumber2.value;
+      column4.innerHTML = _email2.value;
+      column5.innerHTML = _gender2.value;
+      column6.innerHTML = "\n        <a href=\"#\" id=\"hapus\" db-id=".concat(i, "> Hapus</a>\n        <a href=\"#\" id=\"edit\" db-id=").concat(i, "> Edit</a>\n      ");
+      var _input = {
+        id: i++,
+        fullName: _fullName2.value,
+        phoneNumber: _phoneNumber2.value,
+        email: _email2.value,
+        gender: _gender2.value
+      };
+      add(_input);
+    } else {
+      console.log('add contact error');
+    }
+
+    clearForm();
+  }
+
+  var searchBar = document.forms['searchForm'].querySelector('input');
+  searchBar.addEventListener('keyup', function (e) {
+    if (e.target.attributes[0].nodeValue == 'fullname') {}
+
+    if (e.target.attributes[0].nodeValue == 'gender') {}
+  });
+});
 view();
+var tbody = document.querySelector('tbody#table-rows tr');
+var term = e.target.value.toLowerCase();
 },{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -336,7 +407,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57176" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61577" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

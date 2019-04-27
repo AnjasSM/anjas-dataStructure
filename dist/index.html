@@ -2,7 +2,7 @@
 <html>
 
 <head>
-	<title>Parcel Sandbox</title>
+	<title>Contact Manager</title>
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
@@ -16,9 +16,10 @@
 		<br>
 		<div class="container">
 			<div class="row">
+				<!-- Colomn kiri -->
 				<div class="col-4">
 					<div class="shadow p-3 mb-5 bg-white rounded">
-						<form>
+						<form id="input-form" method="POST">
 							<div class="form-group">
 								<label for="input-fullname"><strong>Full Name</strong></label>
 								<input type="string" class="form-control" id="input-fullname" aria-describedby="fullNameHelp" placeholder="Enter Full Name">
@@ -32,26 +33,28 @@
 								<input type="email" class="form-control" id="input-email" aria-describedby="emailHelp" placeholder="Enter Email">
 							</div>
 							<div class="form-group">
-								<label for="input-gender"><strong>Gender</strong></label> <br>
-								<input type="radio" name="gender" value="male"> Male<br>
-								<input type="radio" name="gender" value="female"> Female
+								<label for="input-gender">Gender</label>
+								<select class="form-control" id="input-gender">
+								  <option>Male</option>
+								  <option>Female</option>
+								</select>
 							</div>
-							<button type="submit" class="btn btn-primary" id="submit">Submit</button>
-						</form>
+							<button type="button" class="btn btn-primary" id="submit">Submit</button>
+						</form>  <!-- end form-input-->
 					</div>
-				</div>
+				</div> <!-- end col-4 -->
+				<!-- colomn kanan -->
 				<div class="col-8">
 					<div class="shadow p-3 mb-5 bg-white rounded">
-						<div class="input-group">
-							<input type="text" class="form-control" aria-label="Text input with dropdown button">
-							<div class="input-group-append">
-								<button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter by</button>
-								<div class="dropdown-menu">
-									<a class="dropdown-item" href="#">Name</a>
-									<a class="dropdown-item" href="#">Gender</a>
-								</div>
+						<form action="#" method="get" id="searchForm" class="input-group">
+							<div class="input-group-btn search-panel">
+								<select name="search_param" id="search_param" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+									<option value="fullname">Filter By Name</option>
+									<option value="gender">Filter By Gender</option>
+								</select>
 							</div>
-						</div>
+							<input type="text" class="form-control" name="x" placeholder="Search...">
+						</form><!-- end form -->
 						<div>
 							<table class="table">
 								<thead>
@@ -68,9 +71,9 @@
 							</table>
 						</div>
 					</div>
-				</div>
-			</div>
-		</div>
+				</div> <!-- end col-8-->
+			</div> <!-- end row-->
+		</div> <!-- end container-->
 
 		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
 		</script>
