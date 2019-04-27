@@ -80,35 +80,33 @@ function add(data) {
 function isValid(...input){
   let valid;
   input.map( contact => {
-    let isNull = contact.fullName !== "" && contact.phoneNumber !== "" && contact.email !== "";
-    if ( isNull ) {
-      if (contact.length > 3) {
-        return true;
-      } else {
-        valid = 'min4';
-        return false
+    const numbers = /[0-9]/;
+    const email = /[!@#_$%^&*(),.|]/;
+    
+ if(isNull){
+   if(contact.fullName.length > 3 && contact.email.length > 3 && contact.phoneNumber.length > 3) {
+    if(email.test(contact.email)){
+      if(numbers.test(contact.phoneNumber)){
+        return true
+      }else{
+        alert('Phone Number Harus angka');
+        return false;
       }
-    } else {
-      val = null;
+    }else{
+      alert('Email Harus Sesuai Dengan Format Email')
       return false;
     }
-  });
 
-  const numbers = /[0-9]/g
-  if ( valid === null ) {
-    alert("Input Tidak Boleh Kosong")
-  } else {
-    if (valid === "min4") {
-      alert(" Masukkan minimal 4 karakter")
-    } else {
-      if ( numbers.test(contact.phoneNumber)) {
-        return true
-      } else {
-        alert("Phone Number harus berisi Number")
-      }
-    }
-  }
-};
+   }else{
+     alert('Masukkan Minimal 4 Karakter');
+    return false;
+   }
+
+ }else{
+   alert('Input Tidak Boleh kosong');
+   return false;
+ }
+});
 
 //mengubah data
 function edit(data,id) {
