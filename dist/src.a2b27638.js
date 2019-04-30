@@ -122,8 +122,10 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//id db
-var i = 6; //db
+var selectedRow = '';
+var i = 6; //penampung id untuk edit contact
+
+var idTampung = []; //db
 
 var contacts = [{
   id: 1,
@@ -159,6 +161,7 @@ var contacts = [{
 
 function view() {
   contacts.map(function (contact, index) {
+    //menyeleksi id table-row
     var tbody = document.getElementById("table-rows"); //membuat tabel
 
     var row = tbody.insertRow(); // tr, table row
@@ -190,40 +193,6 @@ function add(data) {
   return addContacts;
 }
 
-function isValid() {
-  var valid;
-
-  for (var _len = arguments.length, input = new Array(_len), _key = 0; _key < _len; _key++) {
-    input[_key] = arguments[_key];
-  }
-
-  input.map(function (contact) {
-    var isNull = contact.fullName !== "" && contact.phoneNumber !== "" && contact.email !== "";
-
-    if (isNull) {
-      if (contact.length > 3) {
-        return true;
-      } else {
-        valid = 'min4';
-        return false;
-      }
-    } else {
-      val = null;
-      return false;
-    }
-  });
-
-  if (valid === null) {
-    alert("Input Tidak Boleh Kosong");
-  } else {
-    if (valid === "min4") {
-      alert(" Masukkan minimal 4 karakter");
-    } else {
-      return true;
-    }
-  }
-}
-
 ; //mengubah data
 
 function edit(data, id) {
@@ -235,16 +204,46 @@ function edit(data, id) {
     return contact;
   });
   return editContact;
-} //menghapus data
+}
 
+; //menghapus data
 
 function remove(x) {
   var removeContact = contacts.filter(function (contact) {
     return contact.id != x;
   });
   console.log(removeContact);
-} //mengosongkan form
+}
 
+; //validasi form input nama, nomer, email
+
+function isValid(fullname, phonenumber, email) {
+  var numberval = /^[0-9]+$/;
+  var emailval = /^\w+([\.-]?\w+)*@\w+([\.-]?w+)*(\.\w{2,3})+$/;
+
+  if (fullname != '' && phonenumber != '' && email != '') {
+    if (fullname.length > 3 && phonenumber.length > 3 && email.length > 3) {
+      if (phonenumber.match(numberval)) {
+        if (emailval.test(email)) {
+          return true;
+        } else {
+          alert('Format Email Harus Sesuai \n youremail@mail.com');
+        }
+      } else {
+        alert('Phone Number Harus Berupa Angka');
+        return false;
+      }
+    } else {
+      alert('Input Minimal 4 Karakter');
+      return false;
+    }
+  } else {
+    alert('Input Tidak Boleh kosong');
+    return false;
+  }
+}
+
+; //mengosongkan form
 
 function clearForm() {
   var fullName = document.getElementById("input-fullname");
@@ -253,70 +252,88 @@ function clearForm() {
   fullName.value = '';
   phoneNumber.value = '';
   email.value = '';
-} //event click untuk tombol submit
-//event click untuk tombol remove
+}
 
-
+;
 document.addEventListener('click', function (e) {
+  //evwnt klik untuk tombol hapus
   if (e.target.id == 'hapus') {
-    var id = e.target.attributes[2].nodeValue;
-    var data = document.getElementById("db-".concat(id));
-    data.innerHTML = "";
-    remove(id);
+    if (confirm("Apakah Anda Yakin Untuk Menghapus Kontak Ini ?")) {
+      var _id = e.target.attributes[2].nodeValue;
+      var data = document.getElementById("db-".concat(_id));
+      data.innerHTML = "";
+      remove(_id);
+    }
+
+    ;
   }
 
+  ; //event klik untuk tombol edit
+
   if (e.target.id == 'edit') {
-    var _id = e.target.attributes[2].nodeValue;
+    var _id2 = e.target.attributes[2].nodeValue;
     var fullName = document.getElementById("input-fullname");
     var phoneNumber = document.getElementById("input-phonenumber");
     var email = document.getElementById("input-email");
     var gender = document.getElementById("input-gender");
-    var dbId = document.getElementById("id");
-    var _data = {};
+    var _data = [];
+    contacts.filter(function (contact) {
+      if (contact.id == _id2) {
+        _data = contact;
+      }
+
+      ;
+    });
     fullName.value = _data.fullName;
     phoneNumber.value = _data.phoneNumber;
     email.value = _data.email;
     gender.value = _data.gender;
-    dbId.value = _data.id;
-    contacts.filter(function (contact) {
-      if (contact.id == _id) {
-        _data = contact;
-      }
-
-      _edit(_data, _id);
-    });
+    idTampung[0] = _data.id;
 
     var _edit = document.getElementById('submit');
 
-    _edit.setAttribute('id', 'ganti');
+    _edit.setAttribute('id', 'edited');
   }
 
-  if (e.target.id == 'ganti') {
+  ;
+
+  if (e.target.id == 'edited') {
     var _fullName = document.getElementById("input-fullname");
 
     var _phoneNumber = document.getElementById("input-phonenumber");
 
     var _email = document.getElementById("input-email");
 
-    var _gender = document.getElementById("input-gender");
+    var _gender = document.getElementById("input-gender"); //validasi
 
-    var _dbId = document.getElementById("id");
 
-    var dataBaru = document.getElementById("db-".concat(_dbId.value));
-    dataBaru.cells[0].innerHTML = _dbId.value;
-    dataBaru.cells[1].innerHTML = _fullName.value;
-    dataBaru.cells[2].innerHTML = _phoneNumber.value;
-    dataBaru.cells[3].innerHTML = _email.value;
-    dataBaru.cells[4].innerHTML = _gender.value;
-    var input = {
-      fullName: _fullName.value,
-      phoneNumber: _phoneNumber.value,
-      email: _email.value,
-      gender: _gender.value
-    };
-    edit(input, _dbId.value);
-    clearForm();
+    var valid = isValid(_fullName.value, _phoneNumber.value, _email.value);
+
+    if (valid) {
+      //seleksi tr yang akan diedit
+      var tr = document.getElementById("db-".concat(idTampung[0]));
+      tr.cells[1].innerHTML = _fullName.value;
+      tr.cells[2].innerHTML = _phoneNumber.value;
+      tr.cells[3].innerHTML = _email.value;
+      tr.cells[4].innerHTML = _gender.value;
+      var input = {
+        id: idTampung[0],
+        fullName: _fullName.value,
+        phoneNumber: _phoneNumber.value,
+        email: _email.value,
+        gender: _gender.value
+      };
+      edit(input, id[0]);
+      alert('Contact Telah Di Update');
+      clearForm();
+      var submit = document.getElementById('edited');
+      submit.setAttribute('id', 'submit');
+    }
+
+    ;
   }
+
+  ; //event klik untuk tombol submit
 
   if (e.target.id == 'submit') {
     var _fullName2 = document.getElementById("input-fullname");
@@ -328,15 +345,13 @@ document.addEventListener('click', function (e) {
     var _gender2 = document.getElementById("input-gender"); //validasi
 
 
-    var valid = isValid(_fullName2.value, _phoneNumber2.value, _email2.value);
+    var _valid = isValid(_fullName2.value, _phoneNumber2.value, _email2.value);
 
-    if (valid) {
-      var _tbody = document.getElementById("table-rows"); //membuat tabel
+    if (_valid) {
+      var tbody = document.getElementById("table-rows"); //membuat tabel
 
-
-      var row = _tbody.insertRow(); // tr, table row
+      var row = tbody.insertRow(); // tr, table row
       //memberikan atribut id dengan value sesuai id user pada setiap baris
-
 
       row.setAttribute("id", "db-".concat(i));
       var column1 = row.insertCell(0); // td, table data, column #0
@@ -353,7 +368,7 @@ document.addEventListener('click', function (e) {
       column3.innerHTML = _phoneNumber2.value;
       column4.innerHTML = _email2.value;
       column5.innerHTML = _gender2.value;
-      column6.innerHTML = "\n        <a href=\"#\" id=\"hapus\" db-id=".concat(i, "> Hapus</a>\n        <a href=\"#\" id=\"edit\" db-id=").concat(i, "> Edit</a>\n      ");
+      column6.innerHTML = "\n          <a href=\"#\" id=\"hapus\" db-id=".concat(i, "> Hapus</a>\n          <a href=\"#\" id=\"edit\" db-id=").concat(i, "> Edit</a>\n        ");
       var _input = {
         id: i++,
         fullName: _fullName2.value,
@@ -362,13 +377,13 @@ document.addEventListener('click', function (e) {
         gender: _gender2.value
       };
       add(_input);
-    } else {
-      console.log('add contact error');
+      alert('Contact Baru Telah Di Input');
     }
 
     clearForm();
   }
 
+  ;
   var searchBar = document.forms['searchForm'].querySelector('input');
   searchBar.addEventListener('keyup', function (e) {
     if (e.target.attributes[0].nodeValue == 'fullname') {}
@@ -377,8 +392,6 @@ document.addEventListener('click', function (e) {
   });
 });
 view();
-var tbody = document.querySelector('tbody#table-rows tr');
-var term = e.target.value.toLowerCase();
 },{}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -407,7 +420,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61577" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57959" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
