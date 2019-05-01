@@ -125,7 +125,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var selectedRow = '';
 var i = 6; //penampung id untuk edit contact
 
-var idTampung = []; //db
+var idTampung = [];
+var idFilter = [1, 2, 3, 4, 5]; //db
 
 var contacts = [{
   id: 1,
@@ -182,7 +183,7 @@ function view() {
     column3.innerHTML = contact.phoneNumber;
     column4.innerHTML = contact.email;
     column5.innerHTML = contact.gender;
-    column6.innerHTML = "\n      <a href=\"#\" id=\"hapus\" db-id=".concat(contact.id, "> Hapus</a>\n      <a href=\"#\" id=\"edit\" db-id=").concat(contact.id, "> Edit</a>\n    ");
+    column6.innerHTML = "\n      <a href=\"#\" id=\"hapus\" db-id=".concat(contact.id, " class=\"btn btn-outline-danger\"> Hapus</a>\n      <a href=\"#\" id=\"edit\" db-id=").concat(contact.id, " class=\"btn btn-outline-success\"> Edit</a>\n    ");
   });
 }
 
@@ -368,7 +369,8 @@ document.addEventListener('click', function (e) {
       column3.innerHTML = _phoneNumber2.value;
       column4.innerHTML = _email2.value;
       column5.innerHTML = _gender2.value;
-      column6.innerHTML = "\n          <a href=\"#\" id=\"hapus\" db-id=".concat(i, "> Hapus</a>\n          <a href=\"#\" id=\"edit\" db-id=").concat(i, "> Edit</a>\n        ");
+      column6.innerHTML = "\n          <a href=\"#\" id=\"hapus\" db-id=".concat(i, " class=\"btn btn-outline-danger\"> Hapus</a>\n          <a href=\"#\" id=\"edit\" db-id=").concat(i, " class=\"btn btn-outline-success\"> Edit</a>\n        ");
+      idFilter.push(i);
       var _input = {
         id: i++,
         fullName: _fullName2.value,
@@ -385,10 +387,33 @@ document.addEventListener('click', function (e) {
 
   ;
   var searchBar = document.forms['searchForm'].querySelector('input');
-  searchBar.addEventListener('keyup', function (e) {
-    if (e.target.attributes[0].nodeValue == 'fullname') {}
+  searchBar.addEventListener('keyup', function () {
+    var optionValue = document.getElementById('search_param').value;
 
-    if (e.target.attributes[0].nodeValue == 'gender') {}
+    if (searchBar.value !== '') {
+      //Jika yang dipilih filter by fullname
+      if (optionValue === 'fullname') {
+        idFilter.forEach(function (num, index) {
+          var tr = document.getElementById("db-".concat(idFilter[index]));
+
+          if (tr.cells[1].innerHTML === searchBar.value) {
+            tr.style.display = "";
+          } else {
+            tr.style.display = "none";
+          }
+        }); //jika yang dipilih filter by Gender
+      } else {
+        idFilter.forEach(function (num, index) {
+          var tr = document.getElementById("db-".concat(idFilter[index]));
+
+          if (tr.cells[4].innerHTML === searchBar.value) {
+            tr.style.display = "";
+          } else {
+            tr.style.display = "none";
+          }
+        });
+      }
+    }
   });
 });
 view();
@@ -420,7 +445,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57959" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49682" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

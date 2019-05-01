@@ -2,6 +2,7 @@ let selectedRow = '';
 let i = 6;
 //penampung id untuk edit contact
 let idTampung = [];
+let idFilter = [1,2,3,4,5];
 
 //db
 const contacts = [{
@@ -68,8 +69,8 @@ function view() {
     column4.innerHTML = contact.email;
     column5.innerHTML = contact.gender;
     column6.innerHTML = `
-      <a href="#" id="hapus" db-id=${contact.id}> Hapus</a>
-      <a href="#" id="edit" db-id=${contact.id}> Edit</a>
+      <a href="#" id="hapus" db-id=${contact.id} class="btn btn-outline-danger"> Hapus</a>
+      <a href="#" id="edit" db-id=${contact.id} class="btn btn-outline-success"> Edit</a>
     `;
   });
 };
@@ -244,10 +245,12 @@ document.addEventListener('click',function(e){
         column4.innerHTML = email.value;
         column5.innerHTML = gender.value;
         column6.innerHTML = `
-          <a href="#" id="hapus" db-id=${i}> Hapus</a>
-          <a href="#" id="edit" db-id=${i}> Edit</a>
+          <a href="#" id="hapus" db-id=${i} class="btn btn-outline-danger"> Hapus</a>
+          <a href="#" id="edit" db-id=${i} class="btn btn-outline-success"> Edit</a>
         `;
-  
+
+        idFilter.push(i);
+
         let input = {
           id: i++,
           fullName: fullName.value,
@@ -255,7 +258,6 @@ document.addEventListener('click',function(e){
           email: email.value,
           gender: gender.value
         }
-      
         add(input);
         alert('Contact Baru Telah Di Input');
       }
@@ -263,16 +265,35 @@ document.addEventListener('click',function(e){
     clearForm();
 
   };
-  
+
 const searchBar = document.forms['searchForm'].querySelector('input')
-searchBar.addEventListener('keyup', function(e){
+searchBar.addEventListener('keyup', function(){
+  
+  let optionValue = document.getElementById('search_param').value;
+  if( searchBar.value !== '') {
+    //Jika yang dipilih filter by fullname
+    if(optionValue === 'fullname') {
+      idFilter.forEach((num, index) => {
+        let tr = document.getElementById(`db-${idFilter[index]}`);
+        if( tr.cells[1].innerHTML === searchBar.value ) {
+          tr.style.display = "";
+        } else {
+          tr.style.display = "none";
+        }
+      })
 
-  if(e.target.attributes[0].nodeValue == 'fullname') {
-
-  }
-
-  if(e.target.attributes[0].nodeValue == 'gender') {
-
+    //jika yang dipilih filter by Gender
+    } else {
+      idFilter.forEach((num, index) => {
+        let tr = document.getElementById(`db-${idFilter[index]}`);
+        if( tr.cells[4].innerHTML === searchBar.value ) {
+          tr.style.display = "";
+        } else {
+          tr.style.display = "none";
+        }
+      })
+      
+    }
   }
 
 })
